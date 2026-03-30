@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Prompt Guard Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #202020;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #eee;
+        }
+
+        p {
+            color: #eee;
+        }
+
+        .card {
+            background: rgb(160, 160, 160);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 10px 18px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #111;
+            color: #eee;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .result-box {
+            background: #f3f3f3;
+            padding: 14px;
+            border-radius: 8px;
+            min-height: 70px;
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .badge.allowed {
+            background: #dff5e1;
+            color: #1f7a2e;
+        }
+
+        .badge.blocked {
+            background: #fde2e2;
+            color: #b42318;
+        }
+
+        @media (max-width: 700px) {
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .status {
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>LLM Prompt Guard Demo</h1>
+    <p>Enter a prompt and send it to your FastAPI backend.</p>
+
+    <div class="card">
+        <label for="promptInput">Prompt</label>
+        <textarea id="promptInput" placeholder="Type your prompt here..."></textarea>
+        <br>
+        <button id="sendButton">Send</button>
+        <div id="statusText" class="status"></div>
+    </div>
+
+    <div class="card">
+        <h2>Response</h2>
+        <div class="result-grid">
+            <div class="result-box">
+                <div class="label">Prompt</div>
+                <div id="promptDisplay">No prompt yet.</div>
+            </div>
+
+            <div class="result-box">
+                <div class="label">Guard Status</div>
+                <div id="guardStatus">-</div>
+            </div>
+
+            <div class="result-box">
+                <div class="label">Model Response</div>
+                <div id="modelResponse">No response yet.</div>
+            </div>
+        </div>
+
+
+        <script>
+            const promptInput = document.getElementById("promptInput");
+            const sendButton = document.getElementById("sendButton");
+            const promptDisplay = document.getElementById("promptDisplay");
+            const guardStatus = document.getElementById("guardStatus");
+            const modelResponse = document.getElementById("modelResponse");
+            const statusText = document.getElementById("statusText");
+
+            const API_URL = "http://127.0.0.1:8000/api/chat";
+
+            async function sendPrompt() {
+                const prompt = promptInput.value.trim();
+
+                if (!prompt) {
+                    statusText.textContent = "Please enter a prompt.";
+                    statusText.className = "status error";
+                    return;
+                }
+
+                statusText.textContent = "Sending...";
+                statusText.className = "status";
+                promptDisplay.textContent = prompt;
+                guardStatus.textContent = "...";
+                modelResponse.textContent = "Waiting for response...";
+
+                try {
+                    const response = await fetch(API_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ prompt: prompt })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(JSON.stringify(data, null, 2));
+                    }
+
+                    statusText.textContent = "Success.";
+                    statusText.className = "status success";
+                    promptDisplay.textContent = data.prompt || data.received_prompt || prompt;
+
+                    const guard = data.guard || {};
+                    const model = data.model || {};
+
+                    const guardStatusValue = guard.status || data.guard_status || "-";
+                    const modelResponseValue = model.response || data.response || "-";
+
+                    guardStatus.innerHTML = `<span class="badge ${guardStatusValue}">${guardStatusValue}</span>`;
+                    modelResponse.textContent = modelResponseValue;
+                }
+                catch (error) {
+                    statusText.textContent = "Request failed.";
+                    statusText.className = "status error";
+                    guardStatus.textContent = "-";
+                    modelResponse.textContent = error.message;
+                }
+            }
+
+            sendButton.addEventListener("click", sendPrompt);
+        </script>
+</body>
+
+</html>
