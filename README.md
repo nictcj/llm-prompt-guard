@@ -1,21 +1,31 @@
 # LLM Prompt Guard
-A testing framework to evaluate a mock-LLM's behaviour.
+A demo project to showcase a testing framework built to evaluate a mock-LLM's prompted behaviour.
 
 ## Summary
 What we have so far:
 - Mock-LLM that accepts user prompt and returns responses.
+- A webpage that allows user to enter prompt and send API requests to endpoint and receive responses.
+- Playwright/Pytest framework to run autotests.
 
 ## Mock-LLM (API Backend)
 FastAPI:
-- Python required:\
-`pip install "fastapi[standard]"`
-- run with\
-`fastapi dev`\
-or\
-`uvicorn main:app --reload`\
-for development auto-reload
-- API docs (Swagger) available at:\
-`http://127.0.0.1:8000/docs`
+- Python required:
+```
+pip install "fastapi[standard]"
+```
+- run with
+```
+fastapi dev
+```
+or
+```
+uvicorn main:app --reload
+```
+for development auto-reload.
+- API docs (Swagger) available at:
+```
+http://127.0.0.1:8000/docs
+```
 
 API endpoints available:
 - `/api/chat`: accepts a string prompt and returns response in JSON format containing:
@@ -26,23 +36,37 @@ API endpoints available:
 ## UI/Frontend
 Webpage for users to access the API endpoints and observe the responses returned.\
 \
-To run:\
-`python -m http.server 5500`\
-then access in browswer via:\
-`http://127.0.0.1:5500`
+To run:
+```
+python -m http.server 5500
+```
+then access in browswer via:
+```
+http://127.0.0.1:5500
+```
 
 ## Playwright/PyTest (Testing Framework)
-To setup, run all the following:\
-`pip install pytest playwright pytest-playwright`\
-`playwright install`
+To setup, run all the following:
+```
+pip install pytest playwright pytest-playwright
+```
+```
+playwright install
+```
 
 ### !!! Reminder
-You will need both the API backend and webpage to be running to run the tests:\
-`uvicorn main:app --reload`\
-`python -m http.server 5500`
+You will need both the API backend and webpage to be running to run the tests:
+```
+uvicorn main:app --reload
+```
+```
+python -m http.server 5500
+```
 
-To run tests:\
-`pytest -v`
+To run tests:
+```
+pytest -v
+```
 
 ## Next steps
 Test reporting\
