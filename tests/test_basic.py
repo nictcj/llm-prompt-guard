@@ -1,6 +1,7 @@
 from playwright.sync_api import expect
 
-def test_basic_request(page):
+def test_basic_request(page_with_artifacts):
+    page = page_with_artifacts
     page.goto("http://127.0.0.1:5500")
     
     test_string = "Test"

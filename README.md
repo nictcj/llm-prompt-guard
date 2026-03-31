@@ -5,7 +5,19 @@ A demo project to showcase a testing framework built to evaluate a mock-LLM's pr
 What we have so far:
 - Mock-LLM that accepts user prompt and returns responses.
 - A webpage that allows user to enter prompt and send API requests to endpoint and receive responses.
-- Playwright/Pytest framework to run autotests.
+- Playwright/PyTest framework to run autotests.
+
+## Setup
+To install all the required dependencies:
+
+Run
+```
+pip install -r requirements.txt
+```
+and
+```
+playwright install --with-deps
+```
 
 ## Mock-LLM (API Backend)
 FastAPI:
@@ -13,13 +25,13 @@ FastAPI:
 ```
 pip install "fastapi[standard]"
 ```
-- run with
+- Start API service with
 ```
 fastapi dev
 ```
 or
 ```
-uvicorn main:app --reload
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 for development auto-reload.
 - API docs (Swagger) available at:
@@ -36,7 +48,7 @@ API endpoints available:
 ## UI/Frontend
 Webpage for users to access the API endpoints and observe the responses returned.\
 \
-To run:
+Start webserver with:
 ```
 python -m http.server 5500
 ```
@@ -68,9 +80,18 @@ To run tests:
 pytest -v
 ```
 
+## Test Reporting
+PyTest will auto-generate human-readable HTML report (playwright-report.html) after each test run. This requires:
+```
+pip install pytest-html
+```
+
+Screenshots will also be automatically captured at the point of failure now and stored in `test-artifacts/screenshots/` to help debug.
+
+## CI Pipeline
+The tests will be triggered to run automatically now following every push/PR into main branch and test artifacts are now available with each CI. Refer to `\.github\workflows\playwright.yaml` for the configuration.
+
 ## Next steps
-Test reporting\
-CI pipeline\
 LLM evals\
-More request handling\
-More tests
+More mock-LLM logic handling\
+Add tests markers for control over which tests will be run during CI
