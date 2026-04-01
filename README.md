@@ -92,6 +92,10 @@ Screenshots will also be automatically captured at the point of failure now and 
 The tests will be triggered to run automatically now following every push/PR into main branch and test artifacts are now available with each CI. Refer to `\.github\workflows\playwright.yaml` for the configuration.
 
 ## Next steps
+Evaluator\
+Prompter\
+Conversation logging and reporting\
+GPT API calls\
 LLM evals\
 More mock-LLM logic handling\
 Add tests markers for control over which tests will be run during CI

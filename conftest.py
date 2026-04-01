@@ -1,5 +1,6 @@
 import os
 import pytest
+from helpers.evaluator import Evaluator
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -15,3 +16,9 @@ def page_with_artifacts(page, request):
 		os.makedirs("test-artifacts/screenshots", exist_ok=True)
 		filename = f"test-artifacts/screenshots/{request.node.name}.png"
 		page.screenshot(path=filename, full_page=True)
+
+@pytest.fixture
+def evaluator():
+    def create(secret):
+        return Evaluator(secret)
+    return create
