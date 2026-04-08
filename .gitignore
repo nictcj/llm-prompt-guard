@@ -5,3 +5,5 @@ draft.txt
 test-artifacts
 playwright-report.html
 assets/
+refactor_backups/
+PromptGuard.code-workspace

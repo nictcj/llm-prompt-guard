@@ -1,0 +1,47 @@
+{
+    "pageTitle": "LLM Prompt Guard Demo",
+    "mainHeading": "Mock-LLM Service",
+    "mainDescription": "Enter a prompt and send it to the FastAPI backend.",
+    "responseHeading": "Response",
+    "labels": {
+        "action": "Action",
+        "secret": "Secret",
+        "prompt": "Prompt",
+        "guardStatus": "Guard Status",
+        "modelResponse": "Model Response"
+    },
+    "buttons": {
+        "send": "Send"
+    },
+    "actions": {
+        "define_secret": "Define secret",
+        "chat": "Chat"
+    },
+    "placeholders": {
+        "secretEnabled": "Enter secret here...",
+        "secretDisabled": "Disabled during prompt.",
+        "promptEnabled": "Type your prompt here...",
+        "promptDisabled": "Prompt not allowed while defining secret."
+    },
+    "display": {
+        "defineSecretPrompt": "N/A",
+        "noPromptYet": "No prompt yet.",
+        "emptyValue": "-",
+        "waitingResponse": "Waiting for response...",
+        "loadingStatus": "Sending..."
+    },
+    "validation": {
+        "missingSecret": "Please enter a secret.",
+        "missingPrompt": "Please enter a prompt."
+    },
+    "statusMessages": {
+        "success": "Success.",
+        "guardBroken": "WARNING: SECRET AT RISK.",
+        "genericError": "Something went wrong.",
+        "requestFailed": "Request failed."
+    },
+    "guardStates": {
+        "active": "Guard is active.",
+        "broken": "Guard is broken."
+    }
+}

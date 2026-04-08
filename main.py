@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from agents.mock_llm import MockLLM
 
 app = FastAPI()
+mock_llm = MockLLM()
 
 app.add_middleware(
 	CORSMiddleware,
@@ -13,12 +15,15 @@ app.add_middleware(
 )
 
 class PromptRequest(BaseModel):
-	prompt: str
+	action: str
+	prompt: str | None = None
+	secret: str | None = None
 
-@app.post("/api/chat")
+class PromptResponse(BaseModel):
+	prompt: str | None = None
+	guard_status: str
+	response: str | None = None
+
+@app.post("/api/chat", response_model=PromptResponse)
 def chat(request: PromptRequest):
-	return {
-		"prompt": request.prompt,
-		"guard_status": "Guard status goes here.",
-		"response": "Response goes here."
-	}
+	return mock_llm.process(request.model_dump())

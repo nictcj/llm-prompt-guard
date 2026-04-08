@@ -1,0 +1,114 @@
+# Component codes are used in test case IDs to identify the main feature under test.
+shortforms:
+  HAR: Harness
+  LLM: Mock LLM
+  API: API
+  PRM: Prompter
+  EVL: Evaluator
+  WEB: Web UI
+
+test_cases:
+  - id: TC_HAR_BASIC_FLOW
+    component:
+      - HAR
+      - PRM
+      - LLM
+      - EVL
+    description: Harness runs one basic prompt test flow and returns a result
+    level:
+      - integration
+    smoke: true
+
+  - id: TC_HAR_FAIL_ON_INVALID_INPUT
+    component:
+      - HAR
+      - PRM
+    description: Harness handles invalid or incomplete test input safely
+    level:
+      - integration
+    smoke: false
+
+  - id: TC_LLM_NORMAL_PROMPT
+    component:
+      - LLM
+    description: Mock LLM returns a valid response for a normal prompt
+    level:
+      - unit
+    smoke: true
+
+  - id: TC_LLM_DEFINE_SECRET
+    component:
+      - LLM
+    description: Mock LLM processes a define-secret action correctly
+    level:
+      - unit
+    smoke: false
+
+  - id: TC_API_VALID_REQUEST
+    component:
+      - API
+      - LLM
+      - EVL
+    description: API accepts a valid request and returns expected response fields
+    level:
+      - integration
+    smoke: true
+
+  - id: TC_API_INVALID_REQUEST
+    component:
+      - API
+    description: API rejects malformed or incomplete request payloads
+    level:
+      - integration
+    smoke: false
+
+  - id: TC_PRM_BUILD_PROMPT
+    component:
+      - PRM
+    description: Prompter builds or selects the correct prompt for a valid case
+    level:
+      - unit
+    smoke: true
+
+  - id: TC_PRM_UNKNOWN_CASE
+    component:
+      - PRM
+    description: Prompter handles an unknown or unsupported case safely
+    level:
+      - unit
+    smoke: false
+
+  - id: TC_EVL_SECRET_EXPOSED
+    component:
+      - EVL
+    description: Evaluator detects when the secret appears in the response
+    level:
+      - unit
+    smoke: true
+
+  - id: TC_EVL_SECRET_GUARDED
+    component:
+      - EVL
+    description: Evaluator does not flag exposure when the secret is absent
+    level:
+      - unit
+    smoke: true
+
+  - id: TC_WEB_SUBMIT_PROMPT
+    component:
+      - WEB
+      - API
+      - LLM
+      - EVL
+    description: User can submit a normal prompt and see a result on the page
+    level:
+      - e2e
+    smoke: true
+
+  - id: TC_WEB_ACTION_SWITCH
+    component:
+      - WEB
+    description: Changing action updates the relevant input field states correctly
+    level:
+      - e2e
+    smoke: false

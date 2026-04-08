@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title id="pageTitle">LLM Prompt Guard Demo</title>
+	<link rel="stylesheet" href="./styles.css">
+	<script src="./app.js" defer></script>
+</head>
+
+<body>
+	<h1 id="mainHeading">Mock-LLM Service</h1>
+	<p id="mainDescription">Enter a prompt and send it to the FastAPI backend.</p>
+
+	<div class="card">
+		<div class="form-row">
+			<label for="actionSelect" id="actionLabel">Action</label>
+			<select id="actionSelect">
+				<option value="define_secret"></option>
+				<option value="chat"></option>
+			</select>
+		</div>
+
+		<div class="form-row">
+			<label for="secretInput" id="secretLabel">Secret</label>
+			<input id="secretInput" type="text">
+		</div>
+
+		<label for="promptInput" id="promptLabel">Prompt</label>
+		<textarea id="promptInput"></textarea>
+		<br>
+		<button id="sendButton">Send</button>
+		<div id="statusText" class="status"></div>
+	</div>
+
+	<div class="card">
+		<h2 id="responseHeading">Response</h2>
+
+		<div class="result-grid">
+			<div class="result-box">
+				<div class="label" id="promptDisplayLabel">Prompt</div>
+				<div id="promptDisplay">No prompt yet.</div>
+			</div>
+
+			<div class="result-box">
+				<div class="label" id="guardStatusLabel">Guard Status</div>
+				<div id="guardStatus">-</div>
+			</div>
+
+			<div class="result-box full-width">
+				<div class="label" id="modelResponseLabel">Model Response</div>
+				<div id="modelResponse">-</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

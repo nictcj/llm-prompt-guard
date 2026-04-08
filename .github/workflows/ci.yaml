@@ -1,4 +1,4 @@
-name: Playwright tests
+name: CI
 
 on:
   push:
@@ -37,6 +37,11 @@ jobs:
         run: |
           python -c "import time; time.sleep(5)"
 
+      
+      - name: Generate static catalogue report
+        run: |
+          python tools/generate_catalogue_report.py
+
       - name: Run tests
         run: |
           pytest
@@ -50,4 +55,5 @@ jobs:
             test-artifacts/
             backend.log
             web.log
-            playwright-report.html
+          if-no-files-found: warn
+          retention-days: 90
