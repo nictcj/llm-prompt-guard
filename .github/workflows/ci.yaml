@@ -30,6 +30,7 @@ jobs:
           nohup uvicorn main:app --host 127.0.0.1 --port 8000 > backend.log 2>&1 &
 
       - name: Start webserver
+        working-directory: ./web-ui
         run: |
           nohup python -m http.server 5500 > web.log 2>&1 &
 

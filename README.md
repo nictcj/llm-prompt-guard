@@ -73,11 +73,19 @@ Playwright drives the browser and interacts with web UI through Chromium for the
 PyTest defines the test structure, assertions, fixtures and execution flow.
 
 ## <a id="reporter"></a> Test Reporting [↑](#top)
+### Static Catalogue Report
+To generate, run:
+```
+python tools\generate_catalogue_report.py
+```
 A catalogue report can be generated under `/test-artifacts/catalogue-report.html` to view all the test cases that are defined in `/tests/metadata/catalogue.yaml`. This `catalogue.yaml` file will be serving as the source-of-truth for the all the test cases, containing all the metadata for each test case and their respective markers. Every pytest that is defined under the `/tests/` directory should ideally have a marker `@pytest.mark.tc_id("TC-ID")` defined to create a linkage with the YAML test cases.
 
+### Test Execution Report
 At the beginning of each test run, for every pytest that has a TC_ID marker defined, the modified PyTest framework will dynamically assign the rest of the markers from `catalogue.yaml` like test-level and component(s) onto the respective pytest. This will then trigger the specific set of tests accordingly and auto-generate a human-readable HTML report `/test-artifacts/report.html` after each test run.
 
-Screenshots will also be automatically captured at the point of failure now and stored in `test-artifacts/screenshots/` to help debug.
+
+### Test Artifacts
+Screenshots will also be automatically captured at the point of failure now and stored in `test-artifacts/screenshots/` to help debug. The FastAPI backend and HTTP webserver log files will also be included after the CI as test artifacts.
 
 ## <a id="ci"></a> CI Pipeline [↑](#top)
 The tests will be triggered to run automatically now following every push/PR into main branch and test artifacts are now available with each CI. Refer to `\.github\workflows\ci.yaml` for the configuration.
