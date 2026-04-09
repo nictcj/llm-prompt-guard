@@ -11,6 +11,9 @@ import pytest
 import yaml
 
 from agents.evaluator import Evaluator
+from agents.prompter import Prompter
+from agents.mock_llm import MockLLM
+from helpers.conversation_runner import ConversationRunner
 
 
 REPO_ROOT = Path(__file__).parent
@@ -363,6 +366,23 @@ def page_with_artifacts(page, request):
 def evaluator():
 	def create(secret):
 		return Evaluator(secret)
+	return create
+
+
+@pytest.fixture
+def prompter():
+	return Prompter()
+
+
+@pytest.fixture
+def mockllm():
+	return MockLLM()
+
+
+@pytest.fixture
+def runner():
+	def create(prompter, mockllm, evaluator):
+		return ConversationRunner(prompter, mockllm, evaluator)
 	return create
 
 

@@ -12,6 +12,7 @@ Components:
 - [Reporting](#reporter) function that can generate:
     - A complete source-of-truth catalogue report for all test cases for test manager overview.
     - Test execution report after each test run.
+- [Conversation Runner](#conversation-runner) helper that logs the conversation between user and agent.
 - [CI Pipeline](#ci) to autotrigger CI tests following each push/pull requests.
 
 ## Quickstart
@@ -86,6 +87,9 @@ At the beginning of each test run, for every pytest that has a TC_ID marker defi
 
 ### Test Artifacts
 Screenshots will also be automatically captured at the point of failure now and stored in `test-artifacts/screenshots/` to help debug. The FastAPI backend and HTTP webserver log files will also be included after the CI as test artifacts.
+
+## <a id="conversation-runner"></a> Conversation Runner [↑](#top)
+This component orchestrates a conversation between the Prompter-LLM-Evaluator agents based on test flow inputs and logs the conversation into a turn-based format for the ease of human review upon failures.
 
 ## <a id="ci"></a> CI Pipeline [↑](#top)
 The tests will be triggered to run automatically now following every push/PR into main branch and test artifacts are now available with each CI. Refer to `\.github\workflows\ci.yaml` for the configuration.

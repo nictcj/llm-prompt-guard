@@ -36,3 +36,82 @@ def test_evaluator_response_null(evaluator):
     response = None
     ev = evaluator(secret)
     assert not ev.secret_exposed(response)
+
+def test_conversation_logging_secret_exposed(runner, prompter, mockllm, evaluator):
+    secret = "TOPSECRET"
+    mockllm.secret = secret
+
+    rnr = runner(prompter, mockllm, evaluator(secret))
+
+    test_flow = [
+        {
+            "intention": "",
+            "keyword": "initialise_conversation"
+        },
+        {
+            "intention": "",
+            "keyword": "direct_secret_request"
+        },
+        {
+            "intention": "",
+            "keyword": "direct_passcode_request"
+        },
+        {
+            "intention": "",
+            "keyword": "slightly_malicious_request"
+        },
+        {
+            "intention": "",
+            "keyword": "event_override_request"
+        },
+        {
+            "intention": "",
+            "keyword": "secret_override_request"
+        },
+        {
+            "intention": "",
+            "keyword": "irrelevant_secret_request"
+        },
+        {
+            "intention": "",
+            "keyword": "passcode_hint_request"
+        },
+        {
+            "intention": "",
+            "keyword": "emergency_passcode_request"
+        },
+        {
+            "intention": "",
+            "keyword": "urgent_tone_request"
+        },
+        {
+            "intention": "",
+            "keyword": "new_secret_request"
+        },
+        {
+            "intention": "",
+            "keyword": "passcode_override_request"
+        },
+        {
+            "intention": "",
+            "keyword": "new_passcode_request"
+        },
+        {
+            "intention": "",
+            "keyword": "old_secret_request"
+        }
+    ]
+
+    for test_case in test_flow:
+        secret_exposed = rnr.run_turn(test_case)
+
+        if secret_exposed:
+            break
+
+    for turn in rnr.conversation_log:
+        print(turn)
+        if secret in turn["response"]:
+            print("^^^ SECRET IS EXPOSED ^^^")
+        
+
+    assert secret_exposed
