@@ -1,8 +1,94 @@
 # LLM Prompt Guard
-This demo project showcases a testing framework created to evaluate a mock-LLM's behaviour. The main focuses here are the test execution flow, reporting capability, conversation logging, test inventory management tooling and CI pipeline integration. Only a small set of test cases have been intentionally created for the sake of verifying that the tooling, framework as well as CI workflow works. As this is only a mocked project, the business logic for the agent placeholders, i.e. Mock-LLM, Prompter and Evaluator, are all hardcoded with values that resemble what agents would respond with and they are not to be mistaken as fully developed agentic components.
+This demo project showcases a lightweight testing framework designed to evaluate a mock LLM’s behaviour. Its main focus is on test execution flow, reporting, conversation logging, test inventory management, and CI pipeline integration. Only a small set of test cases has been created intentionally at this stage, to verify that the framework, tooling, and CI workflow operate correctly. Test coverage will be expanded incrementally as the framework matures.
+
+Because this is a mocked demo project, the business logic behind the placeholder agents — MockLLM, Prompter, and Evaluator — is currently hardcoded to simulate representative behaviours. They should not be mistaken for fully developed agentic components. A natural next step would be to move this logic into structured data tables for better maintainability and test case reuse, with the option of eventually integrating an actual open-source LLM.
 
 ## Summary
 Jump to [quickstart](#quickstart) if you intend to setup the entire project to run locally on your machine. Otherwise, you can look at the [sample reports](#sample) section, which contains some of the final products the framework can generate.
+
+<details>
+<summary>Project Architecture</summary><br>
+
+```text
+llm-prompt-guard
+│
+├─ web-ui/
+│  ├─ index.html
+│  └─ app.js
+│
+├─ main.py
+│  └─ FastAPI backend
+│     └─ /api/chat
+│
+├─ agents/
+│  ├─ prompter.py
+│  │  └─ maps test keywords -> prompt text
+│  ├─ mock_llm.py
+│  │  └─ returns hardcoded responses + guard_status
+│  ├─ evaluator.py
+│  │  └─ checks whether secret was exposed
+│  └─ runner.py
+│     └─ drives multi-turn conversation logging
+│
+├─ tests/
+│  └─ pytest + Playwright tests
+│
+├─ conftest.py
+│  └─ shared fixtures / report enrichment / test metadata linkage
+│
+├─ tools/
+│  └─ report/catalogue generation helpers
+│
+├─ helpers/
+│  └─ shared support utilities
+│
+├─ docs/
+│  └─ published static reports / GitHub Pages assets
+│
+├─ .github/workflows/
+│  └─ ci.yaml
+│     └─ install deps -> start backend -> serve web UI
+│        -> generate catalogue report -> run pytest
+│        -> upload logs/artifacts
+│
+├─ pytest.ini
+├─ requirements.txt
+└─ README.md
+```
+</details><br>
+
+<details>
+<summary>Runtime Flow</summary><br>
+
+```text
+User / Playwright test
+        │
+        ▼
+web-ui (index.html + app.js)
+        │  sends request
+        ▼
+FastAPI backend (main.py)
+        │
+        ▼
+MockLLM.process(payload)
+        │
+        ├─ user action
+        ├─ user prompt
+        └─ returns { prompt, guard_status, response }
+        │
+        ▼
+UI displays result / pytest asserts it
+
+For conversation-style tests (e.g. test_conversation_logging_secret_exposed):
+pytest test
+   -> Prompter builds prompt from keyword
+   -> Runner sends turn-by-turn requests
+   -> MockLLM returns responses
+   -> Evaluator checks secret exposure
+   -> report/log output is generated
+``````
+</details><br>
+
 
 Components summary as below:
 - [Mock-LLM](#mock-llm) that accepts user prompt and returns responses.
@@ -116,5 +202,8 @@ This component orchestrates a conversation between the Prompter-LLM-Evaluator ag
 The tests will be triggered to run automatically now following every push/PR into main branch and test artifacts are now available with each CI. Refer to `\.github\workflows\ci.yaml` for the configuration.
 
 ## Next steps
-- basic test cases
-- evaluation metrics
+- increase basic test coverage
+- expand on API layer and testing
+- restructure test directory according to test levels
+- migrate hardcoded agent data into actual data tables
+- decide on llm eval metrics once there is more meaningful logic model
