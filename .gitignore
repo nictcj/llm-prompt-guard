@@ -7,3 +7,5 @@ playwright-report.html
 assets/
 refactor_backups/
 PromptGuard.code-workspace
+docs/codex-summary/*
+docs/codex-summary/codex-summary.md

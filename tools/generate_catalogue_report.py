@@ -502,6 +502,21 @@ def render_html(data: dict[str, Any]) -> str:
 			--radius: 14px;
 		}}
 
+		:root[data-theme="dark"] {{
+			--bg: #0b1220;
+			--panel: #111a2b;
+			--panel-soft: #162238;
+			--border: #24314a;
+			--text: #e5e7eb;
+			--muted: #b6c2d4;
+			--accent: #7aa2ff;
+			--accent-soft: #182a4a;
+			--success-soft: #123320;
+			--warn-soft: #3a2d10;
+			--danger-soft: #3a1717;
+			--shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+		}}
+
 		* {{
 			box-sizing: border-box;
 		}}
@@ -529,10 +544,37 @@ def render_html(data: dict[str, Any]) -> str:
 			margin-bottom: 22px;
 		}}
 
+		:root[data-theme="dark"] .hero {{
+			background: linear-gradient(135deg, #13213b 0%, #111a2b 70%);
+		}}
+
+		.hero-header {{
+			display: flex;
+			justify-content: space-between;
+			align-items: start;
+			gap: 16px;
+			flex-wrap: wrap;
+		}}
+
 		h1 {{
 			margin: 0 0 8px;
 			font-size: 30px;
 			line-height: 1.2;
+		}}
+
+		.theme-toggle {{
+			border: 1px solid var(--border);
+			background: var(--panel);
+			color: var(--text);
+			border-radius: 999px;
+			padding: 10px 14px;
+			font: inherit;
+			font-weight: 700;
+			cursor: pointer;
+		}}
+
+		.theme-toggle:hover {{
+			border-color: var(--accent);
 		}}
 
 		.subtle {{
@@ -608,6 +650,7 @@ def render_html(data: dict[str, Any]) -> str:
 		.section-heading {{
 			margin: 0 0 16px;
 			font-size: 20px;
+			color: var(--text);
 		}}
 
 		label {{
@@ -624,7 +667,7 @@ def render_html(data: dict[str, Any]) -> str:
 			padding: 10px 12px;
 			border: 1px solid var(--border);
 			border-radius: 10px;
-			background: #fff;
+			background: var(--panel);
 			font: inherit;
 			color: var(--text);
 		}}
@@ -659,37 +702,132 @@ def render_html(data: dict[str, Any]) -> str:
 		}}
 
 		.table-wrap {{
-			overflow-x: auto;
+			overflow: auto;
+			max-height: min(72vh, 760px);
 			border: 1px solid var(--border);
 			border-radius: 14px;
 		}}
 
+		.table-scrollbar {{
+			overflow-x: auto;
+			overflow-y: hidden;
+			height: 16px;
+			margin-bottom: 10px;
+			border: 1px solid var(--border);
+			border-radius: 999px;
+			background: var(--panel-soft);
+		}}
+
+		.table-scrollbar-spacer {{
+			height: 1px;
+		}}
+
+		.table-shell {{
+			overflow: hidden;
+		}}
+
 		table {{
-			width: 100%;
+			width: max-content;
+			min-width: 100%;
+			table-layout: fixed;
 			border-collapse: collapse;
-			background: #fff;
+			background: var(--panel);
+			color: var(--text);
 		}}
 
 		th,
 		td {{
 			padding: 12px 12px;
-			border-bottom: 1px solid #e7edf5;
+			border-bottom: 1px solid var(--border);
 			vertical-align: top;
 			text-align: left;
+			box-sizing: border-box;
+			overflow-wrap: anywhere;
+			word-break: break-word;
+			white-space: normal;
 		}}
 
 		th {{
 			position: sticky;
 			top: 0;
-			background: #f8fbff;
+			background: var(--panel-soft);
 			font-size: 13px;
 			font-weight: 800;
-			color: #334155;
+			color: var(--text);
 			z-index: 1;
 		}}
 
+		.th-content {{
+			display: flex;
+			align-items: flex-start;
+			gap: 8px;
+			min-width: 0;
+		}}
+
+		.th-label {{
+			flex: 1 1 auto;
+			min-width: 0;
+			overflow-wrap: anywhere;
+			white-space: normal;
+		}}
+
+		.th-controls {{
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			flex: 0 0 auto;
+		}}
+
+		.drag-handle {{
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
+			border: 1px solid var(--border);
+			border-radius: 6px;
+			background: var(--panel);
+			color: var(--muted);
+			cursor: grab;
+			flex: 0 0 auto;
+			user-select: none;
+			font-size: 12px;
+			line-height: 1;
+		}}
+
+		.drag-handle:active {{
+			cursor: grabbing;
+		}}
+
+		.resize-handle {{
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 18px;
+			height: 20px;
+			border: 1px solid var(--border);
+			border-radius: 6px;
+			background: var(--panel);
+			color: var(--muted);
+			cursor: col-resize;
+			flex: 0 0 auto;
+			user-select: none;
+			font-size: 12px;
+			line-height: 1;
+			touch-action: none;
+		}}
+
+		.resize-handle:active {{
+			cursor: col-resize;
+		}}
+
+		th.is-drag-over {{
+			outline: 2px dashed var(--accent);
+			outline-offset: -4px;
+		}}
+
 		tr:hover td {{
-			background: #fbfdff;
+			background: var(--panel-soft);
 		}}
 
 		.badge {{
@@ -701,7 +839,7 @@ def render_html(data: dict[str, Any]) -> str:
 			font-weight: 600;
 			background: var(--panel-soft);
 			border: 1px solid var(--border);
-			color: #334155;
+			color: var(--text);
 			white-space: nowrap;
 		}}
 
@@ -730,7 +868,7 @@ def render_html(data: dict[str, Any]) -> str:
 		}}
 
 		code {{
-			background: #f3f6fb;
+			background: var(--panel-soft);
 			padding: 2px 6px;
 			border-radius: 6px;
 			font-family: Consolas, "Courier New", monospace;
@@ -748,16 +886,48 @@ def render_html(data: dict[str, Any]) -> str:
 			font-size: 13px;
 			color: var(--muted);
 		}}
+
+		:root[data-theme="dark"] .subtle,
+		:root[data-theme="dark"] .card-title,
+		:root[data-theme="dark"] .empty-state,
+		:root[data-theme="dark"] .note,
+		:root[data-theme="dark"] .small {{
+			color: var(--muted);
+		}}
+
+		:root[data-theme="dark"] .table-count {{
+			color: #dbe8ff;
+		}}
+
+		:root[data-theme="dark"] .drag-handle,
+		:root[data-theme="dark"] .resize-handle {{
+			background: #0f172a;
+			color: #e2e8f0;
+		}}
+
+		:root[data-theme="dark"] code {{
+			background: #0f172a;
+			color: #f1f5f9;
+		}}
+
+		:root[data-theme="dark"] input::placeholder {{
+			color: #8ea0ba;
+		}}
 	</style>
 </head>
 <body>
 	<div class="page">
 		<section class="hero">
-			<h1>LLM Prompt Guard Test Suite Static Catalogue Report</h1>
-			<p class="subtle">
-				Static inventory view generated from catalogue metadata and AST parsing of test files.
-				No tests were executed.
-			</p>
+			<div class="hero-header">
+				<div>
+					<h1>LLM Prompt Guard Test Suite Static Catalogue Report</h1>
+					<p class="subtle">
+						Static inventory view generated from catalogue metadata and AST parsing of test files.
+						No tests were executed.
+					</p>
+				</div>
+				<button class="theme-toggle" id="themeToggle" type="button">Dark mode</button>
+			</div>
 		</section>
 
 		<section class="meta-grid" id="metaGrid"></section>
@@ -847,6 +1017,25 @@ def render_html(data: dict[str, Any]) -> str:
 
 	<script>
 		const reportData = {json_blob};
+		const themeStorageKey = "promptGuardCatalogueTheme";
+		const columnOrderStorageKey = "promptGuardCatalogueColumnOrder";
+		const columnWidthStorageKey = "promptGuardCatalogueColumnWidths";
+		const tableColumns = [
+			{{ key: "status", label: "Status" }},
+			{{ key: "tc_id", label: "TC ID" }},
+			{{ key: "name", label: "Test Function" }},
+			{{ key: "file_path", label: "File Path" }},
+			{{ key: "level", label: "Level" }},
+			{{ key: "component", label: "Component" }},
+			{{ key: "smoke", label: "Smoke" }},
+			{{ key: "description", label: "Description" }},
+			{{ key: "issues", label: "Issues" }},
+		];
+		let currentColumnOrder = [];
+		let currentColumnWidths = {{}};
+		let draggedColumnKey = null;
+		let activeResize = null;
+		let resizeListenersBound = false;
 
 		function escapeHtml(value) {{
 			return String(value)
@@ -876,6 +1065,137 @@ def render_html(data: dict[str, Any]) -> str:
 				.replace(/\\s+/g, "-");
 
 			return `<span class="badge ${{cssClass}}">${{escapeHtml(status || "")}}</span>`;
+		}}
+
+		function defaultColumnOrder() {{
+			return tableColumns.map(column => column.key);
+		}}
+
+		function loadColumnOrder() {{
+			try {{
+				const stored = JSON.parse(localStorage.getItem(columnOrderStorageKey) || "null");
+				const keys = Array.isArray(stored) ? stored.filter(key => tableColumns.some(column => column.key === key)) : [];
+				const missing = tableColumns.map(column => column.key).filter(key => !keys.includes(key));
+				return [...keys, ...missing];
+			}}
+			catch (error) {{
+				return defaultColumnOrder();
+			}}
+		}}
+
+		function saveColumnOrder(order) {{
+			localStorage.setItem(columnOrderStorageKey, JSON.stringify(order));
+		}}
+
+		function defaultColumnWidths() {{
+			return {{
+				status: 132,
+				tc_id: 168,
+				name: 228,
+				file_path: 248,
+				level: 168,
+				component: 176,
+				smoke: 104,
+				description: 340,
+				issues: 220,
+			}};
+		}}
+
+		function loadColumnWidths() {{
+			const defaults = defaultColumnWidths();
+
+			try {{
+				const stored = JSON.parse(localStorage.getItem(columnWidthStorageKey) || "null");
+				if (!stored || typeof stored !== "object") {{
+					return defaults;
+				}}
+
+				const result = {{ ...defaults }};
+				for (const column of tableColumns) {{
+					const rawValue = stored[column.key];
+					const width = Number(rawValue);
+					if (Number.isFinite(width) && width >= 96) {{
+						result[column.key] = Math.round(width);
+					}}
+				}}
+				return result;
+			}}
+			catch (error) {{
+				return defaults;
+			}}
+		}}
+
+		function saveColumnWidths(widths) {{
+			localStorage.setItem(columnWidthStorageKey, JSON.stringify(widths));
+		}}
+
+		function widthForColumn(key) {{
+			const value = Number(currentColumnWidths[key]);
+			return Number.isFinite(value) && value > 0 ? value : defaultColumnWidths()[key];
+		}}
+
+		function moveColumn(order, fromKey, toKey) {{
+			const next = order.filter(key => key !== fromKey);
+			const targetIndex = next.indexOf(toKey);
+			next.splice(targetIndex, 0, fromKey);
+			return next;
+		}}
+
+		function columnByKey(key) {{
+			return tableColumns.find(column => column.key === key);
+		}}
+
+		function renderHeaderRow() {{
+			return currentColumnOrder.map(key => {{
+				const column = columnByKey(key);
+				return `
+					<th data-column-key="${{column.key}}" style="width: ${{widthForColumn(column.key)}}px;">
+						<div class="th-content">
+							<span class="drag-handle" title="Drag to reorder columns" draggable="true" data-drag-key="${{column.key}}">⋮⋮</span>
+							<span class="th-label">${{escapeHtml(column.label)}}</span>
+							<span class="resize-handle" title="Drag to resize column" data-resize-key="${{column.key}}">&#8596;</span>
+						</div>
+					</th>
+				`;
+			}}).join("");
+		}}
+
+		function renderColumnGroup() {{
+			return `
+				<colgroup>
+					${{currentColumnOrder.map(key => `<col style="width: ${{widthForColumn(key)}}px;">`).join("")}}
+				</colgroup>
+			`;
+		}}
+
+		function renderCell(row, key) {{
+			switch (key) {{
+				case "status":
+					return `<td>${{statusBadge(row.status)}}</td>`;
+				case "tc_id":
+					return `<td><code>${{escapeHtml(row.tc_id || "")}}</code></td>`;
+				case "name":
+					return `
+						<td>
+							${{row.name ? `<code>${{escapeHtml(row.name)}}</code>` : "-"}}
+							${{row.nodeid ? `<div class="small">${{escapeHtml(row.nodeid)}}</div>` : ""}}
+						</td>
+					`;
+				case "file_path":
+					return `<td>${{row.file_path ? `<code>${{escapeHtml(row.file_path)}}</code>` : "-"}}</td>`;
+				case "level":
+					return `<td>${{badgeList(row.level)}}</td>`;
+				case "component":
+					return `<td>${{badgeList(row.component)}}</td>`;
+				case "smoke":
+					return `<td>${{row.smoke === null || row.smoke === undefined ? "-" : escapeHtml(String(row.smoke))}}</td>`;
+				case "description":
+					return `<td>${{escapeHtml(row.description || "")}}</td>`;
+				case "issues":
+					return `<td>${{badgeList(row.issues, "issue-badge")}}</td>`;
+				default:
+					return "<td>-</td>";
+			}}
 		}}
 
 		function renderMeta() {{
@@ -1018,42 +1338,190 @@ def render_html(data: dict[str, Any]) -> str:
 			}}
 
 			return `
-				<div class="table-wrap">
-					<table>
-						<thead>
-							<tr>
-								<th>Status</th>
-								<th>TC ID</th>
-								<th>Test Function</th>
-								<th>File Path</th>
-								<th>Level</th>
-								<th>Component</th>
-								<th>Smoke</th>
-								<th>Description</th>
-								<th>Issues</th>
-							</tr>
-						</thead>
-						<tbody>
-							${{rows.map(row => `
+				<div class="table-shell">
+					<div class="table-scrollbar" id="tableScrollbar">
+						<div class="table-scrollbar-spacer" id="tableScrollbarSpacer"></div>
+					</div>
+					<div class="table-wrap" id="tableWrap">
+						<table id="catalogueTable">
+							${{renderColumnGroup()}}
+							<thead>
 								<tr>
-									<td>${{statusBadge(row.status)}}</td>
-									<td><code>${{escapeHtml(row.tc_id || "")}}</code></td>
-									<td>
-										${{row.name ? `<code>${{escapeHtml(row.name)}}</code>` : "-"}}
-										${{row.nodeid ? `<div class="small">${{escapeHtml(row.nodeid)}}</div>` : ""}}
-									</td>
-									<td>${{row.file_path ? `<code>${{escapeHtml(row.file_path)}}</code>` : ""}}</td>
-									<td>${{badgeList(row.level)}}</td>
-									<td>${{badgeList(row.component)}}</td>
-									<td>${{row.smoke === null || row.smoke === undefined ? "-" : escapeHtml(String(row.smoke))}}</td>
-									<td>${{escapeHtml(row.description || "")}}</td>
-									<td>${{badgeList(row.issues, "issue-badge")}}</td>
+									${{renderHeaderRow()}}
 								</tr>
-							`).join("")}}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								${{rows.map(row => `
+									<tr>
+										${{currentColumnOrder.map(key => renderCell(row, key)).join("")}}
+									</tr>
+								`).join("")}}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			`;
+		}}
+
+		function applyTheme(theme) {{
+			document.documentElement.dataset.theme = theme;
+			localStorage.setItem(themeStorageKey, theme);
+			const button = document.getElementById("themeToggle");
+			if (button) {{
+				button.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+			}}
+		}}
+
+		function initialiseTheme() {{
+			const stored = localStorage.getItem(themeStorageKey);
+			const preferred = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark"
+				: "light";
+			applyTheme(stored || preferred);
+			document.getElementById("themeToggle").addEventListener("click", () => {{
+				const current = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+				applyTheme(current === "dark" ? "light" : "dark");
+			}});
+		}}
+
+		function initialiseColumnOrder() {{
+			currentColumnOrder = loadColumnOrder();
+			saveColumnOrder(currentColumnOrder);
+		}}
+
+		function initialiseColumnWidths() {{
+			currentColumnWidths = loadColumnWidths();
+			saveColumnWidths(currentColumnWidths);
+		}}
+
+		function syncTableScrollbars() {{
+			const topScrollbar = document.getElementById("tableScrollbar");
+			const wrap = document.getElementById("tableWrap");
+			const spacer = document.getElementById("tableScrollbarSpacer");
+
+			if (!topScrollbar || !wrap || !spacer) return;
+
+			spacer.style.width = `${{Math.max(wrap.scrollWidth, wrap.clientWidth)}}px`;
+
+			let syncing = false;
+			topScrollbar.onscroll = () => {{
+				if (syncing) return;
+				syncing = true;
+				wrap.scrollLeft = topScrollbar.scrollLeft;
+				syncing = false;
+			}};
+
+			wrap.onscroll = () => {{
+				if (syncing) return;
+				syncing = true;
+				topScrollbar.scrollLeft = wrap.scrollLeft;
+				syncing = false;
+			}};
+
+			topScrollbar.scrollLeft = wrap.scrollLeft;
+		}}
+
+		function bindColumnDragAndDrop() {{
+			const table = document.getElementById("catalogueTable");
+			if (!table) return;
+
+			table.querySelectorAll(".drag-handle").forEach(handle => {{
+				handle.addEventListener("dragstart", event => {{
+					draggedColumnKey = event.currentTarget.dataset.dragKey;
+					event.dataTransfer.effectAllowed = "move";
+					event.dataTransfer.setData("text/plain", draggedColumnKey);
+				}});
+			}});
+
+			table.querySelectorAll("th").forEach(header => {{
+				header.addEventListener("dragover", event => {{
+					event.preventDefault();
+				}});
+
+				header.addEventListener("dragenter", event => {{
+					event.preventDefault();
+					header.classList.add("is-drag-over");
+				}});
+
+				header.addEventListener("dragleave", () => {{
+					header.classList.remove("is-drag-over");
+				}});
+
+				header.addEventListener("drop", event => {{
+					event.preventDefault();
+					header.classList.remove("is-drag-over");
+
+					const targetKey = header.dataset.columnKey;
+					const fromKey = draggedColumnKey || event.dataTransfer.getData("text/plain");
+
+					if (!fromKey || !targetKey || fromKey === targetKey) {{
+						return;
+					}}
+
+					currentColumnOrder = moveColumn(currentColumnOrder, fromKey, targetKey);
+					saveColumnOrder(currentColumnOrder);
+					renderTable();
+				}});
+			}});
+		}}
+
+		function bindColumnResizing() {{
+			const table = document.getElementById("catalogueTable");
+			if (!table) return;
+
+			table.querySelectorAll(".resize-handle").forEach(handle => {{
+				handle.addEventListener("pointerdown", event => {{
+					event.preventDefault();
+					event.stopPropagation();
+
+					const key = event.currentTarget.dataset.resizeKey;
+					const header = event.currentTarget.closest("th");
+					if (!key || !header) return;
+
+					activeResize = {{
+						key,
+						startX: event.clientX,
+						startWidth: header.getBoundingClientRect().width,
+					}};
+
+					try {{
+						event.currentTarget.setPointerCapture(event.pointerId);
+					}}
+					catch (error) {{
+						// Pointer capture is optional here.
+					}}
+				}});
+			}});
+
+			if (resizeListenersBound) {{
+				return;
+			}}
+
+			resizeListenersBound = true;
+			const clampWidth = width => Math.max(96, Math.min(Math.round(width), 720));
+
+			const finishResize = () => {{
+				if (!activeResize) return;
+				saveColumnWidths(currentColumnWidths);
+				activeResize = null;
+				syncTableScrollbars();
+			}};
+
+			document.addEventListener("pointermove", event => {{
+				if (!activeResize) return;
+
+				const delta = event.clientX - activeResize.startX;
+				const nextWidth = clampWidth(activeResize.startWidth + delta);
+				currentColumnWidths = {{
+					...currentColumnWidths,
+					[activeResize.key]: nextWidth,
+				}};
+
+				renderTable();
+			}});
+
+			document.addEventListener("pointerup", finishResize);
+			document.addEventListener("pointercancel", finishResize);
 		}}
 
 		function renderTable() {{
@@ -1076,6 +1544,9 @@ def render_html(data: dict[str, Any]) -> str:
 				</div>
 				${{renderRows(rows)}}
 			`;
+			bindColumnDragAndDrop();
+			bindColumnResizing();
+			syncTableScrollbars();
 		}}
 
 		function onModeChange() {{
@@ -1103,9 +1574,21 @@ def render_html(data: dict[str, Any]) -> str:
 
 		renderMeta();
 		renderSummary();
+		initialiseTheme();
+		initialiseColumnOrder();
+		initialiseColumnWidths();
 		bindControls();
 		rebuildDynamicFilters();
 		renderTable();
+		window.addEventListener("resize", syncTableScrollbars);
+		new MutationObserver(syncTableScrollbars).observe(document.getElementById("tableHost"), {{
+			childList: true,
+			subtree: true
+		}});
+		document.addEventListener("dragend", () => {{
+			draggedColumnKey = null;
+			document.querySelectorAll("th.is-drag-over").forEach(header => header.classList.remove("is-drag-over"));
+		}});
 	</script>
 </body>
 </html>

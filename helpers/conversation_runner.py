@@ -7,11 +7,21 @@ class ConversationRunner:
 		self.turns = 0
 
 	def run_turn(self, test_case: dict) -> bool:
-		prompt = self.prompter.build(test_case)
+		try:
+			prompt = self.prompter.build(test_case)
+		except (KeyError, TypeError, ValueError):
+			self.turns += 1
+			self.conversation_log.append({
+				"turn": self.turns,
+				"request": None,
+				"response": "Invalid test case input."
+			})
+			return False
+
 		payload = {
-		"action": "chat",
-		"prompt": prompt,
-		"secret": None
+			"action": "chat",
+			"prompt": prompt,
+			"secret": None,
 		}
 
 		result = self.mock_llm.process(payload)

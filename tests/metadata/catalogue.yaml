@@ -28,6 +28,17 @@ test_cases:
       - integration
     smoke: false
 
+  - id: TC_HAR_CONVERSATION_LOGGING
+    component:
+      - HAR
+      - PRM
+      - LLM
+      - EVL
+    description: Harness logs a conversation flow and captures a secret exposure
+    level:
+      - integration
+    smoke: false
+
   - id: TC_LLM_NORMAL_PROMPT
     component:
       - LLM
@@ -40,6 +51,22 @@ test_cases:
     component:
       - LLM
     description: Mock LLM processes a define-secret action correctly
+    level:
+      - unit
+    smoke: false
+
+  - id: TC_LLM_PROFILE_SWITCH
+    component:
+      - LLM
+    description: Mock LLM can switch to an alternate response profile
+    level:
+      - unit
+    smoke: false
+
+  - id: TC_LLM_UNSUPPORTED_ACTION
+    component:
+      - LLM
+    description: Mock LLM returns a controlled error for an unsupported action
     level:
       - unit
     smoke: false
@@ -62,6 +89,14 @@ test_cases:
       - integration
     smoke: false
 
+  - id: TC_API_UNSUPPORTED_ACTION
+    component:
+      - API
+    description: API returns a controlled error for an unsupported action
+    level:
+      - integration
+    smoke: false
+
   - id: TC_PRM_BUILD_PROMPT
     component:
       - PRM
@@ -74,6 +109,14 @@ test_cases:
     component:
       - PRM
     description: Prompter handles an unknown or unsupported case safely
+    level:
+      - unit
+    smoke: false
+
+  - id: TC_PRM_PROFILE_SWITCH
+    component:
+      - PRM
+    description: Prompter can switch to an alternate prompt profile
     level:
       - unit
     smoke: false
@@ -93,6 +136,14 @@ test_cases:
     level:
       - unit
     smoke: true
+
+  - id: TC_EVL_RESPONSE_NULL
+    component:
+      - EVL
+    description: Evaluator does not flag exposure when the response is null
+    level:
+      - unit
+    smoke: false
 
   - id: TC_WEB_SUBMIT_PROMPT
     component:

@@ -9,11 +9,13 @@ from typing import Any
 
 import pytest
 import yaml
+from fastapi.testclient import TestClient
 
 from agents.evaluator import Evaluator
 from agents.prompter import Prompter
 from agents.mock_llm import MockLLM
 from helpers.conversation_runner import ConversationRunner
+import main
 
 
 REPO_ROOT = Path(__file__).parent
@@ -384,6 +386,14 @@ def runner():
 	def create(prompter, mockllm, evaluator):
 		return ConversationRunner(prompter, mockllm, evaluator)
 	return create
+
+
+@pytest.fixture
+def api_client():
+	main.mock_llm.secret = None
+	with TestClient(main.app) as client:
+		yield client
+	main.mock_llm.secret = None
 
 
 def pytest_html_results_table_header(cells):

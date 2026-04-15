@@ -27,8 +27,11 @@ llm-prompt-guard
 │  │  └─ returns hardcoded responses + guard_status
 │  ├─ evaluator.py
 │  │  └─ checks whether secret was exposed
-│  └─ runner.py
+│  └─ conversation_runner.py
 │     └─ drives multi-turn conversation logging
+│  └─ data/
+│     ├─ prompts.yaml
+│     └─ responses.yaml
 │
 ├─ tests/
 │  └─ pytest + Playwright tests
@@ -40,6 +43,7 @@ llm-prompt-guard
 │  └─ report/catalogue generation helpers
 │
 ├─ helpers/
+│  ├─ data_store.py
 │  └─ shared support utilities
 │
 ├─ docs/
@@ -147,6 +151,27 @@ To run tests:
 ```
 pytest -v
 ```
+
+The tests are now split into `tests/unit/`, `tests/integration/`, and `tests/e2e/`. A short change log and verification guide lives in `docs/codex-summary/codex-summary.md`.
+
+To start the browser demo more easily on Windows:
+```
+powershell -ExecutionPolicy Bypass -File .\tools\demo.ps1 start
+```
+That launches the API backend and the static web server as separate background processes and prints the URLs to use in your browser.
+To stop them, run `.\tools\demo.ps1 stop`.
+
+Prompt and response text now live in YAML files so you can reuse the same harness with different conversations:
+- `agents/data/prompts.yaml`
+- `agents/data/responses.yaml`
+
+Switch profiles with a small env var example:
+```powershell
+$env:PROMPTER_PROFILE = "guard_reset_demo"
+$env:MOCKLLM_PROFILE = "guard_reset_demo"
+pytest -q tests\unit\test_prompter.py -k profile_switch
+```
+Use `PROMPTER_PROMPT_FILE` or `MOCKLLM_RESPONSE_FILE` only if you want to point at custom YAML files.
 
 ## <a id="mock-llm"></a> Mock-LLM (Agent) [↑](#top)
 This layer is represented by a MockLLM class object that accepts information from the user, through the web UI, and then returns responses based on internally defined rules. Each MockLLM instance can contain a user-defined secret keyword that is supposed to be classified as sensitive information and should never be leaked through responses.
