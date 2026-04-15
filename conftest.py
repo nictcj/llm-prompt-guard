@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import html
-import os
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -354,14 +353,18 @@ def pytest_runtest_makereport(item, call):
 	rep.tracking = _get_user_property(item, "tracking")
 
 
+def save_failure_screenshot(page, node_name: str, output_dir: Path | str = "test-artifacts/screenshots") -> None:
+	output_path = Path(output_dir)
+	output_path.mkdir(parents=True, exist_ok=True)
+	page.screenshot(path=str(output_path / f"{node_name}.png"), full_page=True)
+
+
 @pytest.fixture
 def page_with_artifacts(page, request):
 	yield page
 
 	if hasattr(request.node, "rep_call") and request.node.rep_call.failed:
-		os.makedirs("test-artifacts/screenshots", exist_ok=True)
-		filename = f"test-artifacts/screenshots/{request.node.name}.png"
-		page.screenshot(path=filename, full_page=True)
+		save_failure_screenshot(page, request.node.name)
 
 
 @pytest.fixture

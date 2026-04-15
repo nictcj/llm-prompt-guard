@@ -39,6 +39,14 @@ test_cases:
       - integration
     smoke: false
 
+  - id: TC_HAR_FAILURE_SCREENSHOT
+    component:
+      - HAR
+    description: Harness captures a screenshot when a web test fails
+    level:
+      - unit
+    smoke: false
+
   - id: TC_LLM_NORMAL_PROMPT
     component:
       - LLM
@@ -143,6 +151,14 @@ test_cases:
     description: Evaluator does not flag exposure when the response is null
     level:
       - unit
+    smoke: false
+
+  - id: TC_HAR_ARTIFACT_UPLOAD
+    component:
+      - HAR
+    description: CI uploads the expected logs and generated reports after a test run
+    level:
+      - integration
     smoke: false
 
   - id: TC_WEB_SUBMIT_PROMPT

@@ -27,12 +27,13 @@ jobs:
 
       - name: Start FastAPI backend
         run: |
-          nohup uvicorn main:app --host 127.0.0.1 --port 8000 > backend.log 2>&1 &
+          mkdir -p test-artifacts
+          nohup uvicorn main:app --host 127.0.0.1 --port 8000 > test-artifacts/backend.log 2>&1 &
 
       - name: Start webserver
         working-directory: ./web-ui
         run: |
-          nohup python -m http.server 5500 > web.log 2>&1 &
+          nohup python -m http.server 5500 > ../test-artifacts/web.log 2>&1 &
 
       - name: Wait services
         run: |
@@ -54,7 +55,5 @@ jobs:
           name: test-artifacts
           path: |
             test-artifacts/
-            backend.log
-            web.log
           if-no-files-found: warn
           retention-days: 90
