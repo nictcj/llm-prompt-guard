@@ -11,8 +11,21 @@ if (-not (Test-Path $statePath)) {
 $state = Get-Content $statePath -Raw | ConvertFrom-Json
 $pids = @($state.backend, $state.frontend) | Where-Object { $_ }
 
+function Stop-ProcessTree {
+	param(
+		[int]$ProcessId
+	)
+
+	$children = Get-CimInstance Win32_Process -Filter "ParentProcessId = $ProcessId" -ErrorAction SilentlyContinue
+	foreach ($child in $children) {
+		Stop-ProcessTree -ProcessId $child.ProcessId
+	}
+
+	Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
+}
+
 foreach ($processId in $pids) {
-	Stop-Process -Id $processId -ErrorAction SilentlyContinue
+	Stop-ProcessTree -ProcessId $processId
 }
 
 Remove-Item -LiteralPath $statePath -Force -ErrorAction SilentlyContinue

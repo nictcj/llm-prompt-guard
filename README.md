@@ -152,7 +152,7 @@ To run tests:
 pytest -v
 ```
 
-The tests are now split into `tests/unit/`, `tests/integration/`, and `tests/e2e/`. A short change log and verification guide lives in `docs/codex-summary/codex-summary.md`.
+The tests are now split into `tests/unit/`, `tests/integration/`, and `tests/e2e/`.
 
 To start the browser demo more easily on Windows:
 ```
