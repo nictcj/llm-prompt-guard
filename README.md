@@ -227,8 +227,4 @@ This component orchestrates a conversation between the Prompter-LLM-Evaluator ag
 The tests will be triggered to run automatically now following every push/PR into main branch and test artifacts are now available with each CI. Refer to `\.github\workflows\ci.yaml` for the configuration.
 
 ## Next steps
-- increase basic test coverage
-- expand on API layer and testing
-- restructure test directory according to test levels
-- migrate hardcoded agent data into actual data tables
-- decide on llm eval metrics once there is more meaningful logic model
+- decide on evaluation metrics once the LLM logic becomes more substantial
