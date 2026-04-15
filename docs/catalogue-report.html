@@ -21,6 +21,21 @@
 			--radius: 14px;
 		}
 
+		:root[data-theme="dark"] {
+			--bg: #0b1220;
+			--panel: #111a2b;
+			--panel-soft: #162238;
+			--border: #24314a;
+			--text: #e5e7eb;
+			--muted: #b6c2d4;
+			--accent: #7aa2ff;
+			--accent-soft: #182a4a;
+			--success-soft: #123320;
+			--warn-soft: #3a2d10;
+			--danger-soft: #3a1717;
+			--shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+		}
+
 		* {
 			box-sizing: border-box;
 		}
@@ -48,10 +63,37 @@
 			margin-bottom: 22px;
 		}
 
+		:root[data-theme="dark"] .hero {
+			background: linear-gradient(135deg, #13213b 0%, #111a2b 70%);
+		}
+
+		.hero-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: start;
+			gap: 16px;
+			flex-wrap: wrap;
+		}
+
 		h1 {
 			margin: 0 0 8px;
 			font-size: 30px;
 			line-height: 1.2;
+		}
+
+		.theme-toggle {
+			border: 1px solid var(--border);
+			background: var(--panel);
+			color: var(--text);
+			border-radius: 999px;
+			padding: 10px 14px;
+			font: inherit;
+			font-weight: 700;
+			cursor: pointer;
+		}
+
+		.theme-toggle:hover {
+			border-color: var(--accent);
 		}
 
 		.subtle {
@@ -127,6 +169,7 @@
 		.section-heading {
 			margin: 0 0 16px;
 			font-size: 20px;
+			color: var(--text);
 		}
 
 		label {
@@ -143,7 +186,7 @@
 			padding: 10px 12px;
 			border: 1px solid var(--border);
 			border-radius: 10px;
-			background: #fff;
+			background: var(--panel);
 			font: inherit;
 			color: var(--text);
 		}
@@ -178,37 +221,132 @@
 		}
 
 		.table-wrap {
-			overflow-x: auto;
+			overflow: auto;
+			max-height: min(72vh, 760px);
 			border: 1px solid var(--border);
 			border-radius: 14px;
 		}
 
+		.table-scrollbar {
+			overflow-x: auto;
+			overflow-y: hidden;
+			height: 16px;
+			margin-bottom: 10px;
+			border: 1px solid var(--border);
+			border-radius: 999px;
+			background: var(--panel-soft);
+		}
+
+		.table-scrollbar-spacer {
+			height: 1px;
+		}
+
+		.table-shell {
+			overflow: hidden;
+		}
+
 		table {
-			width: 100%;
+			width: max-content;
+			min-width: 100%;
+			table-layout: fixed;
 			border-collapse: collapse;
-			background: #fff;
+			background: var(--panel);
+			color: var(--text);
 		}
 
 		th,
 		td {
 			padding: 12px 12px;
-			border-bottom: 1px solid #e7edf5;
+			border-bottom: 1px solid var(--border);
 			vertical-align: top;
 			text-align: left;
+			box-sizing: border-box;
+			overflow-wrap: anywhere;
+			word-break: break-word;
+			white-space: normal;
 		}
 
 		th {
 			position: sticky;
 			top: 0;
-			background: #f8fbff;
+			background: var(--panel-soft);
 			font-size: 13px;
 			font-weight: 800;
-			color: #334155;
+			color: var(--text);
 			z-index: 1;
 		}
 
+		.th-content {
+			display: flex;
+			align-items: flex-start;
+			gap: 8px;
+			min-width: 0;
+		}
+
+		.th-label {
+			flex: 1 1 auto;
+			min-width: 0;
+			overflow-wrap: anywhere;
+			white-space: normal;
+		}
+
+		.th-controls {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			flex: 0 0 auto;
+		}
+
+		.drag-handle {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
+			border: 1px solid var(--border);
+			border-radius: 6px;
+			background: var(--panel);
+			color: var(--muted);
+			cursor: grab;
+			flex: 0 0 auto;
+			user-select: none;
+			font-size: 12px;
+			line-height: 1;
+		}
+
+		.drag-handle:active {
+			cursor: grabbing;
+		}
+
+		.resize-handle {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 18px;
+			height: 20px;
+			border: 1px solid var(--border);
+			border-radius: 6px;
+			background: var(--panel);
+			color: var(--muted);
+			cursor: col-resize;
+			flex: 0 0 auto;
+			user-select: none;
+			font-size: 12px;
+			line-height: 1;
+			touch-action: none;
+		}
+
+		.resize-handle:active {
+			cursor: col-resize;
+		}
+
+		th.is-drag-over {
+			outline: 2px dashed var(--accent);
+			outline-offset: -4px;
+		}
+
 		tr:hover td {
-			background: #fbfdff;
+			background: var(--panel-soft);
 		}
 
 		.badge {
@@ -220,7 +358,7 @@
 			font-weight: 600;
 			background: var(--panel-soft);
 			border: 1px solid var(--border);
-			color: #334155;
+			color: var(--text);
 			white-space: nowrap;
 		}
 
@@ -249,7 +387,7 @@
 		}
 
 		code {
-			background: #f3f6fb;
+			background: var(--panel-soft);
 			padding: 2px 6px;
 			border-radius: 6px;
 			font-family: Consolas, "Courier New", monospace;
@@ -267,16 +405,48 @@
 			font-size: 13px;
 			color: var(--muted);
 		}
+
+		:root[data-theme="dark"] .subtle,
+		:root[data-theme="dark"] .card-title,
+		:root[data-theme="dark"] .empty-state,
+		:root[data-theme="dark"] .note,
+		:root[data-theme="dark"] .small {
+			color: var(--muted);
+		}
+
+		:root[data-theme="dark"] .table-count {
+			color: #dbe8ff;
+		}
+
+		:root[data-theme="dark"] .drag-handle,
+		:root[data-theme="dark"] .resize-handle {
+			background: #0f172a;
+			color: #e2e8f0;
+		}
+
+		:root[data-theme="dark"] code {
+			background: #0f172a;
+			color: #f1f5f9;
+		}
+
+		:root[data-theme="dark"] input::placeholder {
+			color: #8ea0ba;
+		}
 	</style>
 </head>
 <body>
 	<div class="page">
 		<section class="hero">
-			<h1>LLM Prompt Guard Test Suite Static Catalogue Report</h1>
-			<p class="subtle">
-				Static inventory view generated from catalogue metadata and AST parsing of test files.
-				No tests were executed.
-			</p>
+			<div class="hero-header">
+				<div>
+					<h1>LLM Prompt Guard Test Suite Static Catalogue Report</h1>
+					<p class="subtle">
+						Static inventory view generated from catalogue metadata and AST parsing of test files.
+						No tests were executed.
+					</p>
+				</div>
+				<button class="theme-toggle" id="themeToggle" type="button">Dark mode</button>
+			</div>
 		</section>
 
 		<section class="meta-grid" id="metaGrid"></section>
@@ -365,7 +535,26 @@
 	</div>
 
 	<script>
-		const reportData = {"meta": {"catalogue_path": "tests/metadata/catalogue.yaml", "tests_root": "tests", "layout_rule": "Level-To-Directory Matching"}, "summary": {"catalogue_cases": 12, "parsed_tests": 5, "implemented_rows": 3, "unimplemented_cases": 9, "invalid_linked_tests": 0, "floating_tests": 2, "mismatches": 3, "duplicate_links": 0}, "modes": {"complete_catalogue": [{"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_API_INVALID_REQUEST", "description": "API rejects malformed or incomplete request payloads", "component": ["API"], "level": ["integration"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_API_VALID_REQUEST", "description": "API accepts a valid request and returns expected response fields", "component": ["API", "LLM", "EVL"], "level": ["integration"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_EVL_SECRET_EXPOSED", "description": "Evaluator detects when the secret appears in the response", "component": ["EVL"], "level": ["unit"], "smoke": true, "file_path": "tests/test_basic.py", "name": "test_evaluator_secret_exposed", "nodeid": "tests/test_basic.py::test_evaluator_secret_exposed", "issues": ["Expected File Under tests/unit/, Found tests/test_basic.py"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_EVL_SECRET_GUARDED", "description": "Evaluator does not flag exposure when the secret is absent", "component": ["EVL"], "level": ["unit"], "smoke": true, "file_path": "tests/test_basic.py", "name": "test_evaluator_secret_guarded", "nodeid": "tests/test_basic.py::test_evaluator_secret_guarded", "issues": ["Expected File Under tests/unit/, Found tests/test_basic.py"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_HAR_BASIC_FLOW", "description": "Harness runs one basic prompt test flow and returns a result", "component": ["HAR", "PRM", "LLM", "EVL"], "level": ["integration"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_HAR_FAIL_ON_INVALID_INPUT", "description": "Harness handles invalid or incomplete test input safely", "component": ["HAR", "PRM"], "level": ["integration"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_LLM_DEFINE_SECRET", "description": "Mock LLM processes a define-secret action correctly", "component": ["LLM"], "level": ["unit"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_LLM_NORMAL_PROMPT", "description": "Mock LLM returns a valid response for a normal prompt", "component": ["LLM"], "level": ["unit"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_PRM_BUILD_PROMPT", "description": "Prompter builds or selects the correct prompt for a valid case", "component": ["PRM"], "level": ["unit"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_PRM_UNKNOWN_CASE", "description": "Prompter handles an unknown or unsupported case safely", "component": ["PRM"], "level": ["unit"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_WEB_ACTION_SWITCH", "description": "Changing action updates the relevant input field states correctly", "component": ["WEB"], "level": ["e2e"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_WEB_SUBMIT_PROMPT", "description": "User can submit a normal prompt and see a result on the page", "component": ["WEB", "API", "LLM", "EVL"], "level": ["e2e"], "smoke": true, "file_path": "tests/test_basic.py", "name": "test_basic_request", "nodeid": "tests/test_basic.py::test_basic_request", "issues": ["Expected File Under tests/e2e/, Found tests/test_basic.py"], "duplicate": false}], "unimplemented": [{"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_API_INVALID_REQUEST", "description": "API rejects malformed or incomplete request payloads", "component": ["API"], "level": ["integration"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_API_VALID_REQUEST", "description": "API accepts a valid request and returns expected response fields", "component": ["API", "LLM", "EVL"], "level": ["integration"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_HAR_BASIC_FLOW", "description": "Harness runs one basic prompt test flow and returns a result", "component": ["HAR", "PRM", "LLM", "EVL"], "level": ["integration"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_HAR_FAIL_ON_INVALID_INPUT", "description": "Harness handles invalid or incomplete test input safely", "component": ["HAR", "PRM"], "level": ["integration"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_LLM_DEFINE_SECRET", "description": "Mock LLM processes a define-secret action correctly", "component": ["LLM"], "level": ["unit"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_LLM_NORMAL_PROMPT", "description": "Mock LLM returns a valid response for a normal prompt", "component": ["LLM"], "level": ["unit"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_PRM_BUILD_PROMPT", "description": "Prompter builds or selects the correct prompt for a valid case", "component": ["PRM"], "level": ["unit"], "smoke": true, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_PRM_UNKNOWN_CASE", "description": "Prompter handles an unknown or unsupported case safely", "component": ["PRM"], "level": ["unit"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}, {"mode": "complete_catalogue", "status": "Unimplemented", "tc_id": "TC_WEB_ACTION_SWITCH", "description": "Changing action updates the relevant input field states correctly", "component": ["WEB"], "level": ["e2e"], "smoke": false, "file_path": "", "name": "", "nodeid": "", "issues": ["No Linked Test Found"], "duplicate": false}], "invalid_linked_tests": [], "floating_tests": [{"mode": "floating_tests", "status": "Floating", "tc_id": "", "description": "", "component": [], "level": [], "smoke": null, "file_path": "tests/test_basic.py", "name": "test_conversation_logging_secret_exposed", "nodeid": "tests/test_basic.py::test_conversation_logging_secret_exposed", "issues": ["No Tc_Id Marker"], "duplicate": false}, {"mode": "floating_tests", "status": "Floating", "tc_id": "", "description": "", "component": [], "level": [], "smoke": null, "file_path": "tests/test_basic.py", "name": "test_evaluator_response_null", "nodeid": "tests/test_basic.py::test_evaluator_response_null", "issues": ["No Tc_Id Marker"], "duplicate": false}], "mismatches": [{"mode": "mismatches", "status": "Mismatch", "tc_id": "TC_EVL_SECRET_EXPOSED", "description": "Evaluator detects when the secret appears in the response", "component": ["EVL"], "level": ["unit"], "smoke": true, "file_path": "tests/test_basic.py", "name": "test_evaluator_secret_exposed", "nodeid": "tests/test_basic.py::test_evaluator_secret_exposed", "issues": ["Expected File Under tests/unit/, Found tests/test_basic.py"], "duplicate": false}, {"mode": "mismatches", "status": "Mismatch", "tc_id": "TC_EVL_SECRET_GUARDED", "description": "Evaluator does not flag exposure when the secret is absent", "component": ["EVL"], "level": ["unit"], "smoke": true, "file_path": "tests/test_basic.py", "name": "test_evaluator_secret_guarded", "nodeid": "tests/test_basic.py::test_evaluator_secret_guarded", "issues": ["Expected File Under tests/unit/, Found tests/test_basic.py"], "duplicate": false}, {"mode": "mismatches", "status": "Mismatch", "tc_id": "TC_WEB_SUBMIT_PROMPT", "description": "User can submit a normal prompt and see a result on the page", "component": ["WEB", "API", "LLM", "EVL"], "level": ["e2e"], "smoke": true, "file_path": "tests/test_basic.py", "name": "test_basic_request", "nodeid": "tests/test_basic.py::test_basic_request", "issues": ["Expected File Under tests/e2e/, Found tests/test_basic.py"], "duplicate": false}]}};
+		const reportData = {"meta": {"catalogue_path": "tests/metadata/catalogue.yaml", "tests_root": "tests", "layout_rule": "Level-To-Directory Matching"}, "summary": {"catalogue_cases": 18, "parsed_tests": 18, "implemented_rows": 18, "unimplemented_cases": 0, "invalid_linked_tests": 0, "floating_tests": 0, "mismatches": 0, "duplicate_links": 0}, "modes": {"complete_catalogue": [{"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_API_INVALID_REQUEST", "description": "API rejects malformed or incomplete request payloads", "component": ["API"], "level": ["integration"], "smoke": false, "file_path": "tests/integration/test_api.py", "name": "test_api_invalid_request", "nodeid": "tests/integration/test_api.py::test_api_invalid_request", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_API_UNSUPPORTED_ACTION", "description": "API returns a controlled error for an unsupported action", "component": ["API"], "level": ["integration"], "smoke": false, "file_path": "tests/integration/test_api.py", "name": "test_api_unsupported_action", "nodeid": "tests/integration/test_api.py::test_api_unsupported_action", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_API_VALID_REQUEST", "description": "API accepts a valid request and returns expected response fields", "component": ["API", "LLM", "EVL"], "level": ["integration"], "smoke": true, "file_path": "tests/integration/test_api.py", "name": "test_api_valid_request", "nodeid": "tests/integration/test_api.py::test_api_valid_request", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_EVL_RESPONSE_NULL", "description": "Evaluator does not flag exposure when the response is null", "component": ["EVL"], "level": ["unit"], "smoke": false, "file_path": "tests/unit/test_evaluator.py", "name": "test_evaluator_response_null", "nodeid": "tests/unit/test_evaluator.py::test_evaluator_response_null", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_EVL_SECRET_EXPOSED", "description": "Evaluator detects when the secret appears in the response", "component": ["EVL"], "level": ["unit"], "smoke": true, "file_path": "tests/unit/test_evaluator.py", "name": "test_evaluator_secret_exposed", "nodeid": "tests/unit/test_evaluator.py::test_evaluator_secret_exposed", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_EVL_SECRET_GUARDED", "description": "Evaluator does not flag exposure when the secret is absent", "component": ["EVL"], "level": ["unit"], "smoke": true, "file_path": "tests/unit/test_evaluator.py", "name": "test_evaluator_secret_guarded", "nodeid": "tests/unit/test_evaluator.py::test_evaluator_secret_guarded", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_HAR_BASIC_FLOW", "description": "Harness runs one basic prompt test flow and returns a result", "component": ["HAR", "PRM", "LLM", "EVL"], "level": ["integration"], "smoke": true, "file_path": "tests/integration/test_conversation_runner.py", "name": "test_harness_basic_flow", "nodeid": "tests/integration/test_conversation_runner.py::test_harness_basic_flow", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_HAR_CONVERSATION_LOGGING", "description": "Harness logs a conversation flow and captures a secret exposure", "component": ["HAR", "PRM", "LLM", "EVL"], "level": ["integration"], "smoke": false, "file_path": "tests/integration/test_conversation_runner.py", "name": "test_conversation_logging_secret_exposed", "nodeid": "tests/integration/test_conversation_runner.py::test_conversation_logging_secret_exposed", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_HAR_FAIL_ON_INVALID_INPUT", "description": "Harness handles invalid or incomplete test input safely", "component": ["HAR", "PRM"], "level": ["integration"], "smoke": false, "file_path": "tests/integration/test_conversation_runner.py", "name": "test_harness_invalid_input", "nodeid": "tests/integration/test_conversation_runner.py::test_harness_invalid_input", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_LLM_DEFINE_SECRET", "description": "Mock LLM processes a define-secret action correctly", "component": ["LLM"], "level": ["unit"], "smoke": false, "file_path": "tests/unit/test_mock_llm.py", "name": "test_llm_define_secret", "nodeid": "tests/unit/test_mock_llm.py::test_llm_define_secret", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_LLM_NORMAL_PROMPT", "description": "Mock LLM returns a valid response for a normal prompt", "component": ["LLM"], "level": ["unit"], "smoke": true, "file_path": "tests/unit/test_mock_llm.py", "name": "test_llm_normal_prompt", "nodeid": "tests/unit/test_mock_llm.py::test_llm_normal_prompt", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_LLM_PROFILE_SWITCH", "description": "Mock LLM can switch to an alternate response profile", "component": ["LLM"], "level": ["unit"], "smoke": false, "file_path": "tests/unit/test_mock_llm.py", "name": "test_mockllm_profile_switch", "nodeid": "tests/unit/test_mock_llm.py::test_mockllm_profile_switch", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_LLM_UNSUPPORTED_ACTION", "description": "Mock LLM returns a controlled error for an unsupported action", "component": ["LLM"], "level": ["unit"], "smoke": false, "file_path": "tests/unit/test_mock_llm.py", "name": "test_llm_unsupported_action", "nodeid": "tests/unit/test_mock_llm.py::test_llm_unsupported_action", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_PRM_BUILD_PROMPT", "description": "Prompter builds or selects the correct prompt for a valid case", "component": ["PRM"], "level": ["unit"], "smoke": true, "file_path": "tests/unit/test_prompter.py", "name": "test_prompter_build_prompt", "nodeid": "tests/unit/test_prompter.py::test_prompter_build_prompt", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_PRM_PROFILE_SWITCH", "description": "Prompter can switch to an alternate prompt profile", "component": ["PRM"], "level": ["unit"], "smoke": false, "file_path": "tests/unit/test_prompter.py", "name": "test_prompter_profile_switch", "nodeid": "tests/unit/test_prompter.py::test_prompter_profile_switch", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_PRM_UNKNOWN_CASE", "description": "Prompter handles an unknown or unsupported case safely", "component": ["PRM"], "level": ["unit"], "smoke": false, "file_path": "tests/unit/test_prompter.py", "name": "test_prompter_unknown_case", "nodeid": "tests/unit/test_prompter.py::test_prompter_unknown_case", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_WEB_ACTION_SWITCH", "description": "Changing action updates the relevant input field states correctly", "component": ["WEB"], "level": ["e2e"], "smoke": false, "file_path": "tests/e2e/test_web.py", "name": "test_web_action_switch", "nodeid": "tests/e2e/test_web.py::test_web_action_switch", "issues": [], "duplicate": false}, {"mode": "complete_catalogue", "status": "Implemented", "tc_id": "TC_WEB_SUBMIT_PROMPT", "description": "User can submit a normal prompt and see a result on the page", "component": ["WEB", "API", "LLM", "EVL"], "level": ["e2e"], "smoke": true, "file_path": "tests/e2e/test_web.py", "name": "test_basic_request", "nodeid": "tests/e2e/test_web.py::test_basic_request", "issues": [], "duplicate": false}], "unimplemented": [], "invalid_linked_tests": [], "floating_tests": [], "mismatches": []}};
+		const themeStorageKey = "promptGuardCatalogueTheme";
+		const columnOrderStorageKey = "promptGuardCatalogueColumnOrder";
+		const columnWidthStorageKey = "promptGuardCatalogueColumnWidths";
+		const tableColumns = [
+			{ key: "status", label: "Status" },
+			{ key: "tc_id", label: "TC ID" },
+			{ key: "name", label: "Test Function" },
+			{ key: "file_path", label: "File Path" },
+			{ key: "level", label: "Level" },
+			{ key: "component", label: "Component" },
+			{ key: "smoke", label: "Smoke" },
+			{ key: "description", label: "Description" },
+			{ key: "issues", label: "Issues" },
+		];
+		let currentColumnOrder = [];
+		let currentColumnWidths = {};
+		let draggedColumnKey = null;
+		let activeResize = null;
+		let resizeListenersBound = false;
 
 		function escapeHtml(value) {
 			return String(value)
@@ -395,6 +584,137 @@
 				.replace(/\s+/g, "-");
 
 			return `<span class="badge ${cssClass}">${escapeHtml(status || "")}</span>`;
+		}
+
+		function defaultColumnOrder() {
+			return tableColumns.map(column => column.key);
+		}
+
+		function loadColumnOrder() {
+			try {
+				const stored = JSON.parse(localStorage.getItem(columnOrderStorageKey) || "null");
+				const keys = Array.isArray(stored) ? stored.filter(key => tableColumns.some(column => column.key === key)) : [];
+				const missing = tableColumns.map(column => column.key).filter(key => !keys.includes(key));
+				return [...keys, ...missing];
+			}
+			catch (error) {
+				return defaultColumnOrder();
+			}
+		}
+
+		function saveColumnOrder(order) {
+			localStorage.setItem(columnOrderStorageKey, JSON.stringify(order));
+		}
+
+		function defaultColumnWidths() {
+			return {
+				status: 132,
+				tc_id: 168,
+				name: 228,
+				file_path: 248,
+				level: 168,
+				component: 176,
+				smoke: 104,
+				description: 340,
+				issues: 220,
+			};
+		}
+
+		function loadColumnWidths() {
+			const defaults = defaultColumnWidths();
+
+			try {
+				const stored = JSON.parse(localStorage.getItem(columnWidthStorageKey) || "null");
+				if (!stored || typeof stored !== "object") {
+					return defaults;
+				}
+
+				const result = { ...defaults };
+				for (const column of tableColumns) {
+					const rawValue = stored[column.key];
+					const width = Number(rawValue);
+					if (Number.isFinite(width) && width >= 96) {
+						result[column.key] = Math.round(width);
+					}
+				}
+				return result;
+			}
+			catch (error) {
+				return defaults;
+			}
+		}
+
+		function saveColumnWidths(widths) {
+			localStorage.setItem(columnWidthStorageKey, JSON.stringify(widths));
+		}
+
+		function widthForColumn(key) {
+			const value = Number(currentColumnWidths[key]);
+			return Number.isFinite(value) && value > 0 ? value : defaultColumnWidths()[key];
+		}
+
+		function moveColumn(order, fromKey, toKey) {
+			const next = order.filter(key => key !== fromKey);
+			const targetIndex = next.indexOf(toKey);
+			next.splice(targetIndex, 0, fromKey);
+			return next;
+		}
+
+		function columnByKey(key) {
+			return tableColumns.find(column => column.key === key);
+		}
+
+		function renderHeaderRow() {
+			return currentColumnOrder.map(key => {
+				const column = columnByKey(key);
+				return `
+					<th data-column-key="${column.key}" style="width: ${widthForColumn(column.key)}px;">
+						<div class="th-content">
+							<span class="drag-handle" title="Drag to reorder columns" draggable="true" data-drag-key="${column.key}">⋮⋮</span>
+							<span class="th-label">${escapeHtml(column.label)}</span>
+							<span class="resize-handle" title="Drag to resize column" data-resize-key="${column.key}">&#8596;</span>
+						</div>
+					</th>
+				`;
+			}).join("");
+		}
+
+		function renderColumnGroup() {
+			return `
+				<colgroup>
+					${currentColumnOrder.map(key => `<col style="width: ${widthForColumn(key)}px;">`).join("")}
+				</colgroup>
+			`;
+		}
+
+		function renderCell(row, key) {
+			switch (key) {
+				case "status":
+					return `<td>${statusBadge(row.status)}</td>`;
+				case "tc_id":
+					return `<td><code>${escapeHtml(row.tc_id || "")}</code></td>`;
+				case "name":
+					return `
+						<td>
+							${row.name ? `<code>${escapeHtml(row.name)}</code>` : "-"}
+							${row.nodeid ? `<div class="small">${escapeHtml(row.nodeid)}</div>` : ""}
+						</td>
+					`;
+				case "file_path":
+					return `<td>${row.file_path ? `<code>${escapeHtml(row.file_path)}</code>` : "-"}</td>`;
+				case "level":
+					return `<td>${badgeList(row.level)}</td>`;
+				case "component":
+					return `<td>${badgeList(row.component)}</td>`;
+				case "smoke":
+					return `<td>${row.smoke === null || row.smoke === undefined ? "-" : escapeHtml(String(row.smoke))}</td>`;
+				case "description":
+					return `<td>${escapeHtml(row.description || "")}</td>`;
+				case "issues":
+					return `<td>${badgeList(row.issues, "issue-badge")}</td>`;
+				default:
+					return "<td>-</td>";
+			}
 		}
 
 		function renderMeta() {
@@ -537,42 +857,190 @@
 			}
 
 			return `
-				<div class="table-wrap">
-					<table>
-						<thead>
-							<tr>
-								<th>Status</th>
-								<th>TC ID</th>
-								<th>Test Function</th>
-								<th>File Path</th>
-								<th>Level</th>
-								<th>Component</th>
-								<th>Smoke</th>
-								<th>Description</th>
-								<th>Issues</th>
-							</tr>
-						</thead>
-						<tbody>
-							${rows.map(row => `
+				<div class="table-shell">
+					<div class="table-scrollbar" id="tableScrollbar">
+						<div class="table-scrollbar-spacer" id="tableScrollbarSpacer"></div>
+					</div>
+					<div class="table-wrap" id="tableWrap">
+						<table id="catalogueTable">
+							${renderColumnGroup()}
+							<thead>
 								<tr>
-									<td>${statusBadge(row.status)}</td>
-									<td><code>${escapeHtml(row.tc_id || "")}</code></td>
-									<td>
-										${row.name ? `<code>${escapeHtml(row.name)}</code>` : "-"}
-										${row.nodeid ? `<div class="small">${escapeHtml(row.nodeid)}</div>` : ""}
-									</td>
-									<td>${row.file_path ? `<code>${escapeHtml(row.file_path)}</code>` : ""}</td>
-									<td>${badgeList(row.level)}</td>
-									<td>${badgeList(row.component)}</td>
-									<td>${row.smoke === null || row.smoke === undefined ? "-" : escapeHtml(String(row.smoke))}</td>
-									<td>${escapeHtml(row.description || "")}</td>
-									<td>${badgeList(row.issues, "issue-badge")}</td>
+									${renderHeaderRow()}
 								</tr>
-							`).join("")}
-						</tbody>
-					</table>
+							</thead>
+							<tbody>
+								${rows.map(row => `
+									<tr>
+										${currentColumnOrder.map(key => renderCell(row, key)).join("")}
+									</tr>
+								`).join("")}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			`;
+		}
+
+		function applyTheme(theme) {
+			document.documentElement.dataset.theme = theme;
+			localStorage.setItem(themeStorageKey, theme);
+			const button = document.getElementById("themeToggle");
+			if (button) {
+				button.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+			}
+		}
+
+		function initialiseTheme() {
+			const stored = localStorage.getItem(themeStorageKey);
+			const preferred = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+				? "dark"
+				: "light";
+			applyTheme(stored || preferred);
+			document.getElementById("themeToggle").addEventListener("click", () => {
+				const current = document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+				applyTheme(current === "dark" ? "light" : "dark");
+			});
+		}
+
+		function initialiseColumnOrder() {
+			currentColumnOrder = loadColumnOrder();
+			saveColumnOrder(currentColumnOrder);
+		}
+
+		function initialiseColumnWidths() {
+			currentColumnWidths = loadColumnWidths();
+			saveColumnWidths(currentColumnWidths);
+		}
+
+		function syncTableScrollbars() {
+			const topScrollbar = document.getElementById("tableScrollbar");
+			const wrap = document.getElementById("tableWrap");
+			const spacer = document.getElementById("tableScrollbarSpacer");
+
+			if (!topScrollbar || !wrap || !spacer) return;
+
+			spacer.style.width = `${Math.max(wrap.scrollWidth, wrap.clientWidth)}px`;
+
+			let syncing = false;
+			topScrollbar.onscroll = () => {
+				if (syncing) return;
+				syncing = true;
+				wrap.scrollLeft = topScrollbar.scrollLeft;
+				syncing = false;
+			};
+
+			wrap.onscroll = () => {
+				if (syncing) return;
+				syncing = true;
+				topScrollbar.scrollLeft = wrap.scrollLeft;
+				syncing = false;
+			};
+
+			topScrollbar.scrollLeft = wrap.scrollLeft;
+		}
+
+		function bindColumnDragAndDrop() {
+			const table = document.getElementById("catalogueTable");
+			if (!table) return;
+
+			table.querySelectorAll(".drag-handle").forEach(handle => {
+				handle.addEventListener("dragstart", event => {
+					draggedColumnKey = event.currentTarget.dataset.dragKey;
+					event.dataTransfer.effectAllowed = "move";
+					event.dataTransfer.setData("text/plain", draggedColumnKey);
+				});
+			});
+
+			table.querySelectorAll("th").forEach(header => {
+				header.addEventListener("dragover", event => {
+					event.preventDefault();
+				});
+
+				header.addEventListener("dragenter", event => {
+					event.preventDefault();
+					header.classList.add("is-drag-over");
+				});
+
+				header.addEventListener("dragleave", () => {
+					header.classList.remove("is-drag-over");
+				});
+
+				header.addEventListener("drop", event => {
+					event.preventDefault();
+					header.classList.remove("is-drag-over");
+
+					const targetKey = header.dataset.columnKey;
+					const fromKey = draggedColumnKey || event.dataTransfer.getData("text/plain");
+
+					if (!fromKey || !targetKey || fromKey === targetKey) {
+						return;
+					}
+
+					currentColumnOrder = moveColumn(currentColumnOrder, fromKey, targetKey);
+					saveColumnOrder(currentColumnOrder);
+					renderTable();
+				});
+			});
+		}
+
+		function bindColumnResizing() {
+			const table = document.getElementById("catalogueTable");
+			if (!table) return;
+
+			table.querySelectorAll(".resize-handle").forEach(handle => {
+				handle.addEventListener("pointerdown", event => {
+					event.preventDefault();
+					event.stopPropagation();
+
+					const key = event.currentTarget.dataset.resizeKey;
+					const header = event.currentTarget.closest("th");
+					if (!key || !header) return;
+
+					activeResize = {
+						key,
+						startX: event.clientX,
+						startWidth: header.getBoundingClientRect().width,
+					};
+
+					try {
+						event.currentTarget.setPointerCapture(event.pointerId);
+					}
+					catch (error) {
+						// Pointer capture is optional here.
+					}
+				});
+			});
+
+			if (resizeListenersBound) {
+				return;
+			}
+
+			resizeListenersBound = true;
+			const clampWidth = width => Math.max(96, Math.min(Math.round(width), 720));
+
+			const finishResize = () => {
+				if (!activeResize) return;
+				saveColumnWidths(currentColumnWidths);
+				activeResize = null;
+				syncTableScrollbars();
+			};
+
+			document.addEventListener("pointermove", event => {
+				if (!activeResize) return;
+
+				const delta = event.clientX - activeResize.startX;
+				const nextWidth = clampWidth(activeResize.startWidth + delta);
+				currentColumnWidths = {
+					...currentColumnWidths,
+					[activeResize.key]: nextWidth,
+				};
+
+				renderTable();
+			});
+
+			document.addEventListener("pointerup", finishResize);
+			document.addEventListener("pointercancel", finishResize);
 		}
 
 		function renderTable() {
@@ -595,6 +1063,9 @@
 				</div>
 				${renderRows(rows)}
 			`;
+			bindColumnDragAndDrop();
+			bindColumnResizing();
+			syncTableScrollbars();
 		}
 
 		function onModeChange() {
@@ -622,9 +1093,21 @@
 
 		renderMeta();
 		renderSummary();
+		initialiseTheme();
+		initialiseColumnOrder();
+		initialiseColumnWidths();
 		bindControls();
 		rebuildDynamicFilters();
 		renderTable();
+		window.addEventListener("resize", syncTableScrollbars);
+		new MutationObserver(syncTableScrollbars).observe(document.getElementById("tableHost"), {
+			childList: true,
+			subtree: true
+		});
+		document.addEventListener("dragend", () => {
+			draggedColumnKey = null;
+			document.querySelectorAll("th.is-drag-over").forEach(header => header.classList.remove("is-drag-over"));
+		});
 	</script>
 </body>
 </html>
